@@ -1,0 +1,34 @@
+% \begin{table}[htbp]
+%   \centering
+%   \caption{BWB aircraft optimization results of the Case Study III.}
+%     \begin{tabular}{l|ccccc}
+%     \hline
+%     \textbf{Parameterization} &  \multicolumn{1}{l}{\textbf{Final} $C_D$ {\footnotesize(counts)}} & \multicolumn{1}{l}{\textbf{Final} $C_L$} & \multicolumn{1}{l}{\textbf{Final} $C_M$} & \multicolumn{1}{l}{\textbf{Final} $\alpha$} & \multicolumn{1}{l}{\textbf{Final} {\footnotesize $Vol/Vol_\text{original}$}}\\
+%     \hline
+%     \multicolumn{6}{l}{\textbf{w/ L3 Grid}} \\
+%     \hline
+%     \textbf{DMM} & \num{104.14}  & \num{0.20055}  & \num{3.7524e-3}  & 0.60 & 99.1\%\\
+%     \textbf{FFD} & \num{103.33}  & \num{0.20056}  & \num{-1.1998e-6} & 2.29 & \\
+%     \hline
+%     \multicolumn{6}{l}{\textbf{w/ L2 Grid}} \\
+%     \hline
+%     \textbf{DMM} & \num{86.42}  & \num{0.20072}  & \num{9.8807e-4} & 0.60 & 99.6\%\\
+%     \textbf{FFD} &   &   &   &  & \\
+%     \hline
+%     \end{tabular}%
+%   \label{tab:bwb_result}%
+% \end{table}%
+
+\begin{table}[!t]
+  \centering
+  \caption{\small BWB aircraft optimization results of the Case Study III.}
+    \begin{tabular}{lcccc}
+    \hline
+    \textbf{Parameterization} &  \multicolumn{1}{l}{\textbf{Final} $C_D$ {\footnotesize(counts)}} & \multicolumn{1}{l}{\textbf{Final} $C_L$} & \multicolumn{1}{l}{\textbf{Final} $C_M$} & \multicolumn{1}{l}{\textbf{Final} $\alpha$}\\
+    \hline
+    \textbf{DeepGeo} & \num{86.42}  & \num{0.20072}  & \num{9.8807e-4} & 0.60 \\
+    \textbf{FFD} & \num{87.05}  & \num{0.20056}  & \num{2.4675e-9}  & 2.47 \\
+    \hline
+    \end{tabular}%
+  \label{ch5:tab:bwb_result}%
+\end{table}%

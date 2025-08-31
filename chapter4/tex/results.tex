@@ -1,0 +1,29 @@
+\section{Preliminary Results}
+\label{ch4:sec:results}
+We investigate the effectiveness of the proposed models on 2D airfoil optimization cases as preliminary experiments.
+We follow the settings in ADODG Case 1, where the optimization objective is to reduce NACA-0012's drag coefficient in a transonic inviscid flow (Ma=0.85) at zero angle-of-attack.
+
+To show the benefits of full differentiable provided by the proposed model, we use different methods to predict the airfoil's drag coefficient and generate the coefficient's gradient with respect to the geometry.
+We append a GCNN surrogate model \cite{aa.Baque2018} on LSM.
+It is initially trained on $1000$ random NACA airfoil simulation cases.
+Then the training dataset is extended with additional $300$ optimized geometries initialized with random NACA airfoils and the surrogate model is retrained.
+As for DMM, we use the SU2's continuous adjoint solver \cite{aa.Economon2016} based on regenerated meshes.
+
+During optimization, the thickness of the manipulated airfoil must be no less than to the NACA-0012 and we formulate it as a soft geometric constraint as $\cL_{cons}$.
+
+\begin{figure}[!htb]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{chapter4/fig/optim_result.pdf}
+    \end{center}
+    \caption{
+        \small The results of shape optimization. We show the change of drag coefficients with the number of iterations and a comparison of initial and optimized airfoils produced by (a) LSM with the GCNN surrogate model and (b) DMM with the SU2's adjoint solver.
+    }
+    \label{ch4:fig:optm_res}
+\end{figure}
+
+The optimized results are demonstrated in Fig.\ref{ch4:fig:optm_res}. 
+In both cases the drag coefficients are reduced by a noticeable proportion and the geometric changes are explainable under the inviscid flow condition. 
+The optimized airfoils move the shock waves towards its trailing edge. 
+Both models change the directions of surface normal near the trailing edge so as to counteract the drag forces generated at the leading edge.
+The results show that our models are
+effective for fast prototyping the object shape designs without any case-specific study on the geometry.

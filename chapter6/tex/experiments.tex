@@ -1,0 +1,20 @@
+\section{Experiments and Results}
+\label{ch6:sec:exp}
+
+To investigate \textit{DiffGeo}’s capabilities across a range of aerodynamic design tasks, we perform three case studies in both 2D and 3D contexts. These experiments are designed to evaluate the method’s effectiveness in representative scenarios that reflect practical design challenges:
+\begin{itemize}
+    \item \textbf{Sampling Model Benchmark}: We compare \textit{DiffGeo} with GAN- and VAE-based generative models on a 2D airfoil generation task. The comparison focuses on sampling quality, novelty, diversity and constraint adherence, especially under data-limited settings.
+
+    \item \textbf{Generating Task-Informed Training Data for Surrogate Models}: We integrate \textit{DiffGeo} into a surrogate-based optimization (SBO) pipeline for airfoil design, using conditional sampling to embed design objectives as priors when generating training data for the surrogate models.
+
+    \item \textbf{3D Design Prototyping}: We assess whether \textit{DiffGeo} can produce feasible 3D blade geometries under realistic data scarcity while conforming to high-dimensional design constraints. We also investigate its potential to enhance conventional design tools by automating and accelerating 3D blade prototyping.
+\end{itemize}
+
+These case studies address three key research questions:
+\begin{itemize}
+    \item[1.] \textbf{Data Efficiency}: Can \textit{DiffGeo} support high-quality, novel and controllable design space exploration with only a limited amount of training data?
+
+    \item[2.] \textbf{Deployment Flexibility}: Does decoupling geometry generation from design objectives allow the generative model to be reused across different design tasks without retraining?
+
+    \item[3.] \textbf{Constraint Handling}: To what extent can \textit{DiffGeo} integrate complex, fine-grained and high-dimensional constraints into the generative process?
+\end{itemize}

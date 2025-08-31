@@ -1,0 +1,30 @@
+\begin{table}[!b]
+  \centering
+  \caption{\small Aerodynamic shape optimization task specifications for the Case Study III.}
+  \resizebox{1\columnwidth}{!} {
+        \begin{tabular}{lllrr}
+        \hline
+        \multicolumn{1}{l}{\textbf{Objectives}} & \textbf{Functions/Variables} & \textbf{Description} & \multicolumn{1}{l}{\textbf{DeepGeo Quantity}} & \multicolumn{1}{l}{\textbf{FFD Quantity}} \\
+        \hline
+        \multicolumn{1}{l}{\textbf{Minimize}} & $C_D$  & Drag coefficient &        &  \\
+        \hline
+        \multicolumn{1}{l}{\multirow{3}[2]{*}{\textbf{With respect to}}} & $\Theta$ & Weights of DeepGeo & \num{151585} &         \\
+        \multicolumn{1}{l}{} & $P_z$  & Control points' $z$ coordinates &        & 240 \\
+        \multicolumn{1}{l}{} & $\alpha$ & Angle of attack & 1      & 1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total design variables}} & \num{151586} & 241 \\
+        \hline
+        \multicolumn{1}{l}{\multirow{5}[2]{*}{\textbf{Subject to}}} & $C_L=0.20056$ & Lift coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $C_M=0$ & Moment coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $t \ge 0.01 \; t_\text{original}$ & Minimum thickness constraints &        & 750 \\
+        \multicolumn{1}{r}{} & $Vol \ge {Vol}_\text{original}$ & Minimum volume constraint & 1      &  1 \\
+        \multicolumn{1}{r}{} & $0 \leq \alpha \leq 2.5$ & Angle of attack constraint & 1      &  1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total constraints}} & 7      & 754 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Need value range limits for each DV?}} & NO     & YES \\
+        \hline
+        \end{tabular}%
+    }
+  \label{ch5:tab:bwb_DV_cons}%
+\end{table}%

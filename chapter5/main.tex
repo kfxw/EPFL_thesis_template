@@ -1,0 +1,36 @@
+\chapter{DeepGeo: Deep Geometric Mapping for Shape Parameterization}
+\label{ch5}
+
+This chapter is based on the conference paper \cite{aa.Wei2024b} and the journal paper \cite{aa.Wei2025}.
+
+\textbf{Zhen Wei}, Aobo Yang, Jichao Li, Michaël Bauerheim, Rhea P. Liem, and Pascal Fua, "DeepGeo: Deep Geometric Mapping for Automated and Effective Parameterization in Aerodynamic Shape Optimization,” in AIAA Aviation Forum, 2024. https://doi.org/10.2514/6.2024-3839. 
+
+\textbf{Zhen Wei}, Aobo Yang, Jichao Li, Michaël Bauerheim, Rhea P. Liem, and Pascal Fua, “Automated Parameterization for Aerodynamic Shape Optimization via Deep Geometric Learning,” AIAA Journal, 2025. https://doi.org/10.2514/1.J065203.
+
+\section{Nomenclature}
+
+{\renewcommand\arraystretch{1.0}
+\noindent\begin{longtable*}{@{}l @{\quad=\quad} p{0.8\textwidth}@{}}
+$\alpha$            &  the angle of attack \\
+$C_D,\;C_L,\;C_{M}$&  drag, lift and pitching moment coefficients\\
+$\mathfrak{C}$       &  the subset of DeepGeo's input coordinate space that defines the CFD computational domain \\
+$f_\Theta,\;\Theta$ &  the Deep Geometric Mapping model and its weights \\
+$g$                 &  the adjoint solver \\
+$L$                 &  the loss function and the soft constraint \\
+$M, V, E$           &  the CFD mesh and its vertices, edges \\
+$O$                 &  the optimization objective \\
+$P$                 &  FFD control points \\
+$S$                 &  the initial object geometry for optimization \\
+$t,A,Vol$             &  the geometry's thickness, area and volume \\
+$V^S,\;V^F,\;V^V$   &  CFD mesh vertices on the objects surface, fixed patches and in the volumetric grids
+\end{longtable*}}
+
+\input{chapter5/tex/introduction}
+\input{chapter5/tex/related_works}
+\input{chapter5/tex/method}
+\input{chapter5/tex/cases}
+\input{chapter5/tex/case1_circle_2_airfoil}
+\input{chapter5/tex/case2_CRM}
+\input{chapter5/tex/case3_BWB}
+\input{chapter5/tex/discussion}
+\input{chapter5/tex/appendix}

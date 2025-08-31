@@ -1,0 +1,37 @@
+\begin{table}[!t]
+  \centering
+  \caption{\small Aerodynamic shape optimization task specifications for the Case Study II.}
+  \resizebox{1\columnwidth}{!} {
+        \begin{tabular}{lllrr}
+        \hline
+        \multicolumn{1}{l}{\textbf{Objectives}} & \textbf{Functions/Variables} & \textbf{Description} & \multicolumn{1}{l}{\textbf{DeepGeo Quantity}} & \multicolumn{1}{l}{\textbf{FFD Quantity}} \\
+        \hline
+        \multicolumn{1}{l}{\textbf{Minimize}} & $C_D$  & Drag coefficient &        &  \\
+        \hline
+        \multicolumn{1}{l}{\multirow{3}[2]{*}{\textbf{With respect to}}} & $\Theta$ & Weights of DeepGeo & \num{151585} &         \\
+        \multicolumn{1}{l}{} & $P_z$  & Control points' $z$ coordinates &        & 720 \\
+        \multicolumn{1}{l}{} &   & Twist function &        & 7 \\
+        \multicolumn{1}{l}{} & $\alpha$ & Angle of attack & 1      & 1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total design variables}} & \num{151586} & 728 \\
+        \hline
+        \multicolumn{1}{l}{\multirow{9}[2]{*}{\textbf{Subject to}}} & $C_L=0.5$ & Lift coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $C_M\geq-0.17$ & Moment coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $t \ge 0.25 \; t_\text{original}$ & Minimum thickness constraints &        & 750 \\
+        \multicolumn{1}{r}{} & $Vol \ge {Vol}_\text{original}$ & Minimum volume constraint & 1      & 1  \\
+        \multicolumn{1}{r}{} & $\Delta V^\text{TE}=0$ & Trailing edge constraint & 1      &  \\
+        \multicolumn{1}{r}{} & $\Delta V^\text{LE}_x=0,\;\Delta V^\text{LE}_y=0$ & Leading edge constraint & 1      &  \\
+        \multicolumn{1}{r}{} & $\delta\bv^{\text{LE,root}}=0$ & Fixed-wing root incidence constraint & 1      &  \\
+        \multicolumn{1}{r}{} & $\Delta P^{\text{TE,upper}}_z = -\Delta P^{\text{TE,lower}}_z$ & Fixed trailing-edge constraints &        & 15 \\
+        \multicolumn{1}{l}{} & $\Delta P^{\text{LE,upper,root}}_z =$ & \multirow{2}[1]{*}{Fixed-wing root incidence constraint} & \multirow{2}[1]{*}{} & \multirow{2}[1]{*}{1} \\
+        \multicolumn{1}{l}{} &  $\;\;\;-\Delta P^{\text{LE,lower,root}}_z$ &        &        &  \\
+        \multicolumn{1}{r}{} & $2.0 \leq \alpha \leq 4.0$ & Angle of attack constraint & 1      &  1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total constraints}} & 7      & 770 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Need value range limits for each DV?}} & NO     & YES \\
+        \hline
+        \end{tabular}%
+    }
+  \label{ch5:tab:crm_DV_cons}%
+\end{table}%

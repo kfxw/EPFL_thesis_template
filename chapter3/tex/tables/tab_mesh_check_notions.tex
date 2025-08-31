@@ -1,0 +1,21 @@
+\begin{table}[!htbp]
+  \centering
+  \caption{\small Metrics used in the volumetric mesh quality check.}
+    \begin{tabular}{crrrp{0.28\textwidth}}
+    \hline
+    \hline
+    \textbf{issues} & \multicolumn{2}{c}{\textit{\textbf{errors}}} & \multicolumn{2}{c}{\textit{\textbf{qualities}}} \\
+    \hline
+    mesh   & \multicolumn{1}{l}{E1} & \multicolumn{1}{l}{number of negative volume cells} &        &  \\
+    overlapping & \multicolumn{1}{l}{E2} & \multicolumn{1}{l}{number of incorrectly oriented faces} &        &  \\
+    \hline
+    skewness & \multicolumn{1}{l}{E3} & \multicolumn{1}{l}{number of highly skewed faces} & \multicolumn{1}{l}{Q1} & max skewness \\
+    \hline
+    \multirow{2}[2]{*}{orthogonality} & \multicolumn{1}{l}{E4} & \multicolumn{1}{l}{number of non-orthogonality errors} & \multicolumn{1}{l}{Q2} & max non-orthogonality \\
+           &        &        & \multicolumn{1}{l}{Q3} & mean non-orthogonality \\
+           &        &        & \multicolumn{1}{l}{Q4} & number of severely non-orthogonal faces  (> $70^\circ$)\\
+    \hline
+    \hline
+    \end{tabular}%
+    \label{ch3:tab:mesh_check_notions}
+\end{table}%

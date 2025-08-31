@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+  \centering
+  \caption{Comparison of effective dimensionality for DeepGeo models. The values of random model are based on 20 repeats.}
+  \resizebox{\textwidth}{!}{  
+    \begin{tabular}{llllll}
+    \hline
+    \multirow{2}[2]{*}{\textbf{Model}} & \textbf{Layer 1} & \textbf{Layer 2} & \textbf{Layer 3} & \textbf{Output Layer} & \multirow{2}[2]{*}{\textbf{Overall}}\\
+           & weight ratio: $0.1\%$ & weight ratio: 11.0\% & weight ratio: 87.9\% & weight ratio: 1.0\% &  \\
+    \hline
+    Random & $264.0\pm44.9$ & $114.4\pm63.1$ & $226.5\pm33.5$ & $332.7\pm34.4$ & $215.3\pm37.1$ \\
+    \hline
+    2D Circle & $2.6$  & $2.9$  & $2.6$  & $3.9$  & $2.6$ \\
+    \hline
+    CRM Wing & $2.3$  & $0.4$  & $0.1$  & $4.8$  & $0.2$ \\
+    \hline
+    BWB Aircraft & $134.8$ & $51.5$ & $24.6$ & $-0.5$ & $27.4$ \\
+    \hline
+    \end{tabular}%
+  }
+  \label{ch5:tab:double_descent}%
+\end{table}%

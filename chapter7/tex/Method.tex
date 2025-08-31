@@ -1,0 +1,118 @@
+\section{Methodology}
+\label{ch7:sect:methodology}
+
+In this section, we first introduce the flow matching background in Section~\ref{ch7:subsect:flowBackground}. We then introduce the physical guidance strategy in the flow model in Section~\ref{ch7:subsect:physics}, which leads to the discussion on the proposed \textit{Dflow-SUR} strategy.
+
+\subsection{Flow matching}
+\label{ch7:subsect:flowBackground}
+Flow matching~\cite{ai.Lipman2022} is an approach for training continuous normalizing flows (CNFs) based on regressing vector fields of fixed conditional probability paths. A CNF is designed to learn complex data distributions by parameterizing a time-dependent velocity field $u_t^{\theta}:\mathbb{R}^d \times [0,1]\rightarrow \mathbb{R}^d$ between Gaussian distributions $\mathcal{N}(0, I)$ and a target distribution $X$ to generate the final state $\mathbf{x}_1$ by solving the ODE, 
+\begin{equation}
+    \frac{d \mathbf{x}_t}{d t}
+    = u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr), 
+    \quad \mathbf{x}_0 \sim \mathcal{N}(0, I), 
+    \quad \mathbf{x}_1 = \Phi_{[0,1]}\bigl(\mathbf{x}_0\bigr),
+\end{equation}
+where $u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr)$ denotes the learned velocity field, $\mathbf{x}_0$ is the initial noise, and $\theta$ represents the neural network parameters that define it. The typical unconditional flow matching training process is summarized in Algorithm~\ref{ch7:alg:flowMatching}, where $\eta$ is the learning rate for gradient descent on $\theta$.
+
+\begin{algorithm}
+    \caption{Flow Matching Training}
+    \label{ch7:alg:flow_matching}
+    \begin{algorithmic}
+        \Require Data distribution $X$, noise distribution $\mathcal{N}(0,I)$
+        \State Initialize vector field parameters $\theta$ of $u_t^\theta(x)$
+        \For{each training iteration}
+          \State Sample $\mathbf{x}_0\sim \mathcal{N}(0,I)$, $\mathbf{x}_1 \in X$, and $t \sim U(0,1)$
+          \State Compute interpolated point:  $\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1$
+          \State Compute target velocity:  $\dot{\mathbf{x}}_t = \frac{\mathbf{x}_1-\mathbf{x}_0}{1-t}$
+          \State Compute regression loss:  $\mathcal{L}(\theta)=\bigl\|u_t^\theta(\mathbf{x}_t)-\dot{\mathbf{x}}_t\bigr\|^2$
+          \State Update parameters: $\theta \;\gets\;\theta - \eta\,\nabla_\theta \mathcal{L}(\theta)$
+        \EndFor
+    \end{algorithmic}
+    \label{ch7:alg:flowMatching}
+\end{algorithm}
+
+
+\subsection{Physics injection strategy}
+\label{ch7:subsect:physics}
+When injecting physical loss $\mathcal{L}_{\mathrm{phys}}$ optimization into a pre-trained flow matching velocity field inference process, there are two iteration parameters that serve distinct levers: flow matching inference-time discretization parameter $T$ and the physical loss optimization iteration parameter $K$. Their roles are described briefly below:
+\begin{itemize}
+    \item Inference-time discretization $T$ determines the numerical fidelity of the flow map from initial noise $\mathbf{x}_0$ to final state $\mathbf{x}_1$. During the inference phase, the continuous time interval $[0, 1]$ is partitioned into $T$ segments, with a single step size defined as $\Delta t = \frac{1}{T}$. 
+    \item The number of physical loss optimization iterations $K$ denotes the required iterations for enabling $\mathbf{x}_1$ to approximate the desired physical performance,  where $\Delta k$ represents one optimization iteration step.
+\end{itemize}
+Both parameters can be independently adjusted; however, their step sizes are also regulated by the physical loss introduction mechanism and optimization strategy. 
+
+\subsubsection{Energy-based strategy}
+\label{ch7:subsubsect:energy}
+Physical-based conditional generative approaches typically adopt the energy-based method (EBM)~\cite{ai.LeCun2006,ai.Teh2003}, which is a probabilistic framework that defines a distribution through an energy function. In this strategy, lower energy states correspond to more probable configurations,
+\begin{equation}
+p(\textbf{x} \mid \textbf{c}) \propto p(\textbf{x}) \cdot \mathrm{e}^{-\lambda \cdot \mathcal{E}(\textbf{x})},
+\label{ch7:eqn:energyEqn}
+\end{equation}
+where physical constraints on design $\textbf{x}$ are formed in the energy equation $\mathcal{E}(\textbf{x})$, controlled by the energy coefficient $\lambda$. Originating from thermal theory, $\lambda$ regulates the trade-off between data exploitation and exploration in the generative model. Specifically, smaller $\lambda$ values prioritize leveraging the current data sample distribution $p(\textbf{x})$, whereas larger $\lambda$ values emphasize exploration guided by the energy function $\mathcal{E}(\textbf{x})$.
+
+Given a pre-trained flow matching velocity field $u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr)$ parameterized by $\theta$, the physics-guided generation process can thus be expressed as 
+\begin{equation}
+    \frac{d \mathbf{x}_t}{d t} = u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr) - \lambda \nabla_{\mathbf{x}_t} \mathcal{E}\left(\mathbf{x}_t\right).
+\label{ch7:eqn:energy}
+\end{equation} 
+Based on the distinct stages at which the energy function $\mathcal{E}\left(\mathbf{x}_t\right)$ is introduced into the flow matching time interval $t \in [0,1]$, we categorize the strategies into two energy-based cases, as illustrated in Figures~\ref{ch7:fig:fmStrategy}b and \ref{ch7:fig:fmStrategy}c. Specifically, if the cutoff time of $\mathcal{E}\left(\mathbf{x}_t\right)$ is defined as $t_c$, the two strategies correspond to the scenarios where $t_c = 0$ (Figure~\ref{ch7:fig:fmStrategy}b) and $t_c \neq 0$ (Figure~\ref{ch7:fig:fmStrategy}c), respectively. When $t_c = 0$, the strategies integrate physical guidance from the initial denoising step ($t=0$), ensuring continuous enforcement of physical constraints throughout the entire generation trajectory. The $\mathbf{x}$ generation trajectory is updated with Equation~\ref{ch7:eqn:energy}.
+
+However, due to the high noise level in the initial generation phase, the optimization process is significantly influenced by the gradient uncertainty of the surrogate model over noisy samples, which may degrade generation performance. To mitigate this, the inter-drifting strategy is proposed~\cite{aa.Maze2023,aa.Giannone2023}, in that the generative model first operates in an unconditional manner until time $t=t_c$ to ensure partial denoising of the design, after which physical guidance is incrementally injected to refine the trajectory. The $\mathbf{x}$ generation trajectory is updated with
+\begin{equation}
+\frac{d\mathbf{x}_t}{dt}
+=
+\begin{cases}
+u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr), 
+& t < t_c, \\[6pt]
+u_t^{\theta}\bigl(\mathbf{x}_t, t\bigr)
+- \lambda\,\nabla_{\mathbf{x}_t}\mathcal{E}(\mathbf{x}_t), 
+& t \ge t_c.
+\end{cases}
+\end{equation}
+During this procedure, the number of iterations $K$ available for minimizing the physical loss becomes intrinsically tied to the inference schedule. Once physics‐based guidance is activated at time $t_c$, the remaining inference horizon $t - t_c$ directly limits the optimization depth, such that
+% \begin{equation}
+%   K = t - t_c,\quad \Delta k = \Delta t.
+% \end{equation}
+\begin{equation}
+    K = \frac{t - t_c}{\Delta t}, \quad \Delta k = \Delta t.
+\end{equation}
+This mechanism determines that the physical loss optimization inherently depends on the fidelity of the inference-time discretizations. In other words, the later the physics term is introduced, the fewer gradient-descent steps can be performed on the physical loss within the fixed inference budget.
+
+The intermediate-injection strategy ($t_c \neq 0$) reduces the uncertainty of surrogate model estimations to the generated samples and ensures the gradient quality. However, the finite inference budget inherently limits physical-loss optimization. An inference schedule that is too brief precludes effective loss minimization, whereas an excessively extended schedule incurs unnecessary computational cost. As introduced in Section~\ref{ch7:sect:introduction}, the \textit{asynchronous phenomenon} refers to the inability to synchronize physical-loss optimization with the generative inference process when both processes cannot finish at the same time. This discrepancy arises because the energy-based optimization (via $\mathcal{E}(\mathbf{x})$) and the flow-matching denoising (via $p(\mathbf{x})$) operate with distinct objectives and temporal dependencies. Detailed procedure of the energy-based approach can be found in Algorithm~\ref{ch7:alg:energyAlg} presented in Appendix~\ref{ch7:sect:App_energyBasedAlg}.
+
+In summary, asynchronous behavior in the energy‐based framework arises because physical‐loss optimization (guided by $\nabla\mathcal{E}(\mathbf{x})$) and flow‐matching inference (driven by $u_{t}(\mathbf{x})$) pursue different objectives on different time scales. To synchronize them, one must manually tune two hyperparameters: the energy coefficient $\lambda$, which controls the strength of the physical constraint, and the total number of inference steps $T$, which determines the duration of flow matching. Careful adjustment of $\lambda$ and $T$ is essential to balance physical plausibility against generative fidelity.
+
+\subsubsection{Dflow-SUR}
+\label{ch7:subsubsect:diff}
+In this section, we present the proposed \textit{Dflow-SUR} method. Using this approach, we evaluate $\mathcal{L}(\mathbf{x}_1)$ and back-propagate the loss gradient through the flow ODE to update the initial noise $\mathbf{x}_0$. \textit{D-Flow}~\cite{ai.BenHamu2024}, which is used as the base method to develop \textit{Dflow-SUR}, is a strategy that enables a fully differentiable inference process by tracing the influence of the evaluation on final state $\mathbf{x}_1$ throughout to initial noise $\mathbf{x}_0$. In particular, we recast controllable generation as a source‐point optimization that benefits both from high‐quality gradients---since $\mathbf{x}_1$ has already been denoised by the model---and from an implicit data‐manifold projection. In this case, the ODE’s Jacobian filters out off‐manifold components and thus injects the model’s learned prior into each update, jointly ensuring fidelity to the target objective and consistency with the design space of interest.
+ 
+Here, we combine the differential throughout flow matching strategy with a surrogate model, denoted as \textit{Dflow-SUR}. Given a trained flow matching vector field $u^{\theta}(\mathbf{x})$, \textit{Dflow-SUR} enables a fully differentiable inference process by tracing the influence of the initial noise $\mathbf{x}_0$ through to the final state $\mathbf{x}_1$, which sets it apart from conventional sampling-based methods. This allows us to directly optimize the initial noise to steer the generated design toward desired outcomes. Let \(\mathrm{SUR}_{\phi}(\mathbf{x})\) denote the surrogate physics evaluator, parameterized by weights \(\phi\). The loss function can then be expressed as
+\begin{equation}
+    \mathcal{L}(\mathbf{x})=\|\mathrm{SUR}_{\phi}(\mathbf{x})-\mathbf{y}\|^2,
+\end{equation}
+where $\mathbf{y}$ is the desired physical performance. We examine the dynamics of the final output $\mathbf{x}_1$ under optimization. Specifically, we consider updating the initial noise $\mathbf{x}_0$ via a gradient descent step:
+\begin{equation}
+    \mathbf{x}_0^\tau = \mathbf{x}_0 - \tau \nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}_1),
+\end{equation}
+where the gradient \(\nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}_1)\) is computed through the chain rule,
+\begin{equation}
+    \nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}_1) = D_{\mathbf{x}_0} \mathbf{x}_1^\top \nabla_{\mathbf{x}_1} \mathcal{L}(\mathbf{x}_1).
+\end{equation}
+This formulation enables end-to-end differentiation from the design objective back to the initial noise input. This process is illustrated in Figure~\ref{ch7:fig:fmStrategy}d and the corresponding pseudocode is shown in Algorithm~\ref{ch7:alg:dflowSUR}. As outlined in Algorithm~\ref{ch7:alg:dflowSUR}, differentiating through the flow matching begins by sampling an initial noise $\mathbf{x}_0$. The gradient $\nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}_1)$ is then computed to iteratively optimize $\mathbf{x}_0$, steering the generated sample $\mathbf{x}_1$ toward the desired constraints. Since the generation path depends on the initial $\mathbf{x}_0$, achieving diversity in outputs requires multiple optimization runs with distinct noise initializations.
+
+\begin{algorithm}[H]
+    \caption{\textit{Dflow-SUR}}
+    \begin{algorithmic}
+    \Require A learned vector field $u_{t}^{\theta}(\mathbf{x})$, surrogate model $\mathrm{SUR}_{\phi}$, target physical performance $\mathbf{y}$
+    \State Initialize guess $\mathbf{x}_0$
+    \For{$k = 1$ to $K-1$}
+        \State Generate flow matching by solving an ODE: $\mathbf{x}^{k}(1) \leftarrow \text{solve}(\mathbf{x}_0^{k}, u_t)$
+        \State Compute gradient by chain rule: $\nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}_1) = D_{\mathbf{x}_0} \mathbf{x}_1^\top \nabla_{\mathbf{x}_1} \mathcal{L}(\mathbf{x}_1)$
+        \State Optimize initial noise: $\mathbf{x}_0^{k+1} \leftarrow \mathbf{x}_0^{k} - \tau \nabla_{\mathbf{x}_0} \mathcal{L}(\mathbf{x}^{k}_1)$
+    \EndFor
+    \end{algorithmic}
+    \label{ch7:alg:dflowSUR}
+\end{algorithm}
+
+
+

@@ -1,0 +1,32 @@
+\begin{table}[htb]
+  \centering
+  \caption{\small Aerodynamic shape optimization task specifications for the Case Study I.}
+  \resizebox{0.95\columnwidth}{!} {
+        \begin{tabular}{lllrr}
+        \hline
+        \multicolumn{1}{l}{\textbf{Objectives}} & \textbf{Functions/Variables} & \textbf{Description} & \multicolumn{1}{l}{\textbf{DeepGeo Quantity}} & \multicolumn{1}{l}{\textbf{FFD Quantity}} \\
+        \hline
+        \multicolumn{1}{l}{\textbf{Minimize}} & $C_D$  & Drag coefficient &        &  \\
+        \hline
+        \multicolumn{1}{l}{\multirow{3}[2]{*}{\textbf{With respect to}}} & $\Theta$ & Weights of DeepGeo & \num{151585} &         \\
+        \multicolumn{1}{l}{} & $P_z$  & Control points' $z$ coordinates &        & 30 \\
+        \multicolumn{1}{l}{} & $\alpha$ & Angle of attack & 1      & 1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total design variables}} & \num{151586} & 31 \\
+        \hline
+        \multicolumn{1}{l}{\multirow{6}[2]{*}{\textbf{Subject to}}} & $C_L=0.824$ & Lift coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $C_M\leq0.092$ & Moment coefficient constraint & 1      & 1 \\
+        \multicolumn{1}{r}{} & $t \ge 0.2\,t_\text{RAE2822}$ & Minimum thickness constraints &        & 30 \\
+        \multicolumn{1}{r}{} & $A \ge 0.0654$ & Minimum area constraints &   1    &  1 \\
+        \multicolumn{1}{r}{} & $\delta \bv^\text{TE}=0$ & Trailing edge constraint & 1      &  \\
+        \multicolumn{1}{r}{} & $\delta \bv^\text{LE}=0$ & Leading edge constraint & 1      &  \\
+        \multicolumn{1}{r}{} & $0.5 \leq \alpha \leq 4.0$ & Angle of attack constraint & 1      &  1 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Total constraints}} & 6      & 34 \\
+        \hline
+        \multicolumn{3}{l}{\textbf{Need value range limits for each DV?}} & NO     & YES \\
+        \hline
+        \end{tabular}%
+    }
+  \label{ch5:tab:circle_2_airfoil_DV_cons}%
+\end{table}%

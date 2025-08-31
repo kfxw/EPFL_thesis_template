@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+  \centering
+  \caption{A comparison on training data efficiency between GAN-based methods and \textit{DiffAirfoil}.}
+    \begin{tabular}{l|cc}
+    \hline
+    \textbf{Methods} & \textbf{Model Architecture} & \multicolumn{1}{l}{\textbf{Number of Realistic Training Data}}\\
+    \hline
+    DCGAN~\cite{Li20i}  & generator-discriminator & 1,407\\
+    WGAN~\cite{Li21}  & generator-discriminator & 1,407\\
+    CGAN~\cite{Achour20}   & generator-discriminator & 1,500 \\
+    BSplineGAN~\cite{Du20}  & generator-discriminator & 1,503\\
+    Bézier-GAN~\cite{Chen20d} & generator-discriminator & 1,600 \\
+    \textit{DiffAirfoil} & multi-layer perceptron & 50  \\
+    \hline
+    \end{tabular}%
+  \label{ch6:tab:main_paper_tab_intro}%
+\end{table}%

@@ -1,0 +1,53 @@
+\chapter{DiffGeo: Latent-Space Diffusion for Generative Design Space Exploration}
+\label{ch6}
+
+This chapter is based on the conference paper \cite{aa.Wei2024} and the journal paper submission under review.
+
+\textbf{Zhen Wei}, Edouard R. Dufour, Colin Pelletier, Pascal Fua, and Michaël Bauerheim, “Diffairfoil: An efficient novel airfoil sampler based on latent space diffusion model for aerodynamic shape optimization,” in AIAA AVIATION Forum, 2024, https://doi.org/10.2514/6.2024-3755.
+
+\textbf{Zhen Wei}, Edouard R. Dufour, Colin Pelletier, Pascal Fua, and Michaël Bauerheim, "Aerodynamic Shape Design Space Exploration with Deep Latent Diffusion Model," in submission.
+
+\section{Nomenclature}
+{\renewcommand\arraystretch{1.0}
+\noindent\begin{longtable*}{@{}l @{\quad=\quad} l@{}}
+
+$\mathcal{A}(V)$           & Airfoil area given ordered contour vertices $V$. \\
+$AoA$           & Angle of attacks. \\
+$\beta_1(r),\beta_2(r)$    & Spanwise blade metal angle distribution (twist law) at leading and trailing edges from hub to tip. \\
+$C$                        & Scalar condition input of conditional GAN. \\
+$C_L, C_D$                 & Lift and drag coefficients. \\
+$C^E, C^I$                 & Equality and inequality constraints used in energy-based guidance function. \\
+$\cD_{KL}$                 & Kullback–Leibler divergence. \\
+$D^k_{intra},D^k_{inter}$  & $k$-nearest-intra/inter-sample distance to measure diversity and novelty. \\
+$\cF$                      & Fréchet inception distance. \\
+$f_\Theta$                 & Auto-decoder function of LSM with parameters $\Theta$. \\
+$g_\Gamma^{(G)}, g_\Pi^{(D)}$ & Generator (parameters $\Gamma$) and discriminator (parameters $\Pi$) networks of the GAN baseline. \\
+$g_\Phi$                   & LSDM with parameter $\Phi$. \\
+$\cL$                      & Loss function for model training. \\
+L/D                        & Lift-to-drag ratio. \\
+$M = {V, E}$               & A shape represented as a mesh, with vertices $V$ and edges $E$. \\
+$\hat{M} = {\hat{V}, E}$   & Template mesh used by LSM to deform from. \\
+$q, p$                     & Forward and reverse process of denoising diffusion model. \\
+$S$                        & Shape in training dataset. \\
+$T$                        & Total number of diffusion timesteps. \\
+$\cT(x)$                   & Airfoil thickness distribution at chordwise location $x$. \\
+$Z,\bz$                    & Latent space and latent code learned by LSM. \\
+$\bz_t$                    & Latent code at diffusion timestep $t$. \\
+$\eta$                     & Isentropic efficiency of blade.
+
+\end{longtable*}}
+
+
+{\renewcommand\arraystretch{1.0}
+\noindent\begin{longtable*}{@{}l @{\quad=\quad} l@{}}
+
+\end{longtable*}}
+
+\input{chapter6/tex/introduction}
+\input{chapter6/tex/related works}
+\input{chapter6/tex/method}
+\input{chapter6/tex/experiments}
+\input{chapter6/tex/benchmark}
+\input{chapter6/tex/SBO}
+\input{chapter6/tex/turbine}
+\input{chapter6/tex/conclusion}

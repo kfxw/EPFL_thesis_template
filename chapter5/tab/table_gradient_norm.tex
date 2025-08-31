@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+  \centering
+  \caption{The comparison of mean vector norms of $\nabla \cO_{CFD}$ and $\nabla L_{reg}$ with respect to all DeepGeo's layers}
+    \begin{tabular}{lcccc}
+    \hline
+    \multirow{2}[4]{*}{ASO Case} & \multicolumn{4}{c}{Mean Vector Norm of $\nabla \cO_{CFD}$}\\
+\cline{2-5}           & Layer 1 & Layer 2 & Layer 3 & Output Layer\\
+    \hline
+    2D Circle & 0.1825 & 0.4186 & 0.5105 & 6.3915\\
+    CRM Wing & 0.1254 & 0.2814 & 0.2411 & 6.4747 \\
+    BWB Aircraft & 0.1137 & 0.2166 & 0.1495 & 1.3316\\
+    \hline
+    \multirow{2}[4]{*}{ASO Case} & \multicolumn{4}{c}{Mean Vector Norm of $\nabla L_{reg}$}\\
+\cline{2-5}           & Layer 1 & Layer 2 & Layer 3 & Output Layer\\
+    \hline
+    2D Circle & 0.0003 & 0.0003 & 0.0009 & 0.0235\\
+    CRM Wing & 9.4266$\times 10^{-5}$ & 9.9453$\times 10^{-5}$ & 3.8320$\times 10^{-5}$ & 0.0016 \\
+    BWB Aircraft & 0.0009 & 0.0008 & 0.0003 & 0.0034\\
+    \hline
+    \end{tabular}%
+  \label{ch5:tab:gradient_norm}%
+\end{table}%

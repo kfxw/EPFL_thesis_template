@@ -1,0 +1,16 @@
+\section{Conclusions}
+In summary, a latent representation model of CFD mesh is proposed in this study.
+The main advantages of the proposed model are three folds.
+First, the model learns geometric prior during training and eliminates most handcrafts in object shape parameterization.
+Second, the model represents both the surface mesh and the corresponding computational mesh of the object.
+Third, the model is fully differentiable and works well with gradient-based downstream applications.
+
+We develop an auto-decoder model to encode a given geometry that only contains unstructured points sampled on the surface into a low-dimensional latent vector.
+The latent vector is then decoded as the deformation of a fixed template mesh to reconstruct the target geometric surface.
+We propose a regularization loss applied during training and a differentiable Active Model layer applied during inference to regularize the quality of deformed computational meshes.
+
+Extensive experiments have been conducted to validate the effectiveness of the proposed model.
+The accurate reconstruction results demonstrate that the latent vectors contain rich geometric information.
+The ablation studies on the quality of computational mesh show that the decoded CFD meshes can replace re-meshing when conducting numerical simulations.
+By integrating the proposed model into an end-to-end shape optimization pipeline, one can perform fast prototyping by minimizing manual interventions for parameterization and can produce reasonable optimized shapes.
+We've also discovered that the trained model is insensitive to different types of template meshes. Other latent space properties, such as smoothness and principal components, are investigated and visualized in the Appendix.

@@ -6,32 +6,38 @@
 \cleardoublepage
 \chapter*{Abstract}
 \markboth{Abstract}{Abstract}
-\addcontentsline{toc}{chapter}{Abstract (English/Français/Deutsch)} % adds an entry to the table of contents
-% put your text here
-\lipsum[1-2]
+\addcontentsline{toc}{chapter}{Abstract (English/Français)} % adds an entry to the table of contents
 
+Engineering design is the process through which people draft, evaluate and optimize products, and it forms the foundation of manufacturing. Modern engineering design increasingly demands automated, scalable methods that handle complex geometries and high-dimensional design spaces while accelerating the entire design process. This thesis introduces a series of deep geometric learning techniques that provide flexible, differentiable shape representations and enable controllable design exploration, with a focus on aerodynamic shape design and optimization. 
 
+First, I develop a Latent Space Model (LSM) for 2D airfoil Computational Fluid Dynamics (CFD) meshes, an auto-decoder network that encodes each mesh into a low-dimensional latent code and reconstructs it by deforming a fixed template. A novel volumetric deformation regularization ensures smooth, valid CFD meshes after deformation. Because the mesh geometry remains fully differentiable with respect to the latent code, the LSM allows efficient gradient-based optimization directly through the CFD mesh. Next, I introduce and compare two parameterization strategies. The LSM approach learns deformation from a database of shapes, while the new Direct Mapping Model (DMM) constructs a parameterization on the fly for a single target geometry without requiring training data. Both models incorporate mesh-regularized deformation to preserve computational mesh quality. The analysis clarifies their trade-offs: LSM leverages data priors, whereas DMM is data-independent, and each can be chosen based on specific problem needs.
 
+Building on these insights, I develop DeepGeo, a deep geometric mapping framework for high-fidelity 3D aerodynamic shapes. DeepGeo generalizes DMM to complex 3D geometries by automatically learning deformation in very high-dimensional design spaces, thereby streamlining the shape parameterization procedure in design optimization. It provides large deformation freedom while inherently enforcing global smoothness. In case studies, including a 2D circle, the NASA Common Research Model wing, and a Blended-Wing-Body aircraft, DeepGeo produces optimized shapes with aerodynamic performance on par with state-of-the-art hand-crafted parameterizations, while significantly reducing manual effort.
 
-% German abstract
-\begin{otherlanguage}{german}
-\cleardoublepage
-\chapter*{Zusammenfassung}
-\markboth{Zusammenfassung}{Zusammenfassung}
-% put your text here
-\lipsum[1-2]
-\end{otherlanguage}
+The thesis then shifts to generative design space exploration, a necessary step prior to design optimization for fast concept prototyping. I propose DiffGeo, a latent-space diffusion model that learns to sample diverse, valid aerodynamic shapes. By training the diffusion model on the latent codes learned with LSM, DiffGeo achieves high data efficiency and guarantees physical validity of generated designs. DiffGeo also demonstrates a conditional sampling scheme: by guiding the diffusion process with complex geometric objectives, engineers can generate shapes meeting specified criteria. Finally, I participated in the development of Dflow-SUR, a physics-guided diffusion approach with high computational efficiency and superior controllability. A surrogate model provides a differentiable performance score that guides the diffusion sampling in latent space. Optimizing the latent sampling through gradient feedback produces airfoil and wing designs with improved aerodynamic performance.
 
+These contributions together form a coherent design pipeline: from efficient design space exploration to highly automated design optimization empowered by fully differentiable parameterization models. The results show that deep geometric learning can handle challenging design representations and greatly accelerate the design cycle by automating much of the geometry handling and providing AI-driven concept generation. This interdisciplinary research paves the way toward more exploratory, efficient and human-AI collaborative design workflows.
 
-
+\textbf{Key words:} AI-driven engineering design, deep geometric learning, aerodynamic shape optimization, shape parameterization, generative design
 
 % French abstract
 \begin{otherlanguage}{french}
 \cleardoublepage
 \chapter*{Résumé}
 \markboth{Résumé}{Résumé}
-% put your text here
-\lipsum[1-2]
+
+La conception ingénierique est le processus par lequel on élabore, évalue et optimise des produits, et elle constitue le fondement de la fabrication moderne. La conception contemporaine exige de plus en plus des méthodes automatisées et évolutives capables de traiter des géométries complexes et des espaces de conception de haute dimension tout en accélérant l’ensemble du processus de conception. Cette thèse introduit une série de techniques d’apprentissage géométrique profond qui offrent des représentations de formes flexibles et différentiables et permettent une exploration contrôlable de l’espace de conception, avec un accent particulier sur la conception et l’optimisation aérodynamiques des formes.
+
+Dans un premier temps, je développe un modèle d’espace latent (Latent Space Model, LSM) pour les maillages bidimensionnels de profils aérodynamiques utilisés en mécanique des fluides numérique (Computational Fluid Dynamics, CFD). Ce réseau auto-décodeur encode chaque maillage dans un code latent de faible dimension et le reconstruit en déformant un gabarit fixe. Une régularisation volumétrique originale de la déformation garantit des maillages CFD lisses et valides après déformation. Comme la géométrie du maillage demeure entièrement différentiable par rapport au code latent, le LSM permet une optimisation efficace par gradients directement à travers le maillage CFD. Ensuite, j’introduis et compare deux stratégies de paramétrisation. L’approche LSM apprend les modes de déformation à partir d’une base de données de formes, tandis que le nouveau modèle de cartographie directe (Direct Mapping Model, DMM) construit une paramétrisation à la volée pour une géométrie cible unique, sans nécessiter de données d’entraînement. Les deux modèles intègrent une régularisation du maillage afin de préserver la qualité du maillage de calcul. L’analyse met en évidence leurs compromis : le LSM exploite des données a priori, alors que le DMM est indépendant des données, et chacun peut être choisi en fonction des besoins spécifiques du problème.
+
+En m’appuyant sur ces résultats, je développe DeepGeo, un cadre de cartographie géométrique profonde pour les formes aérodynamiques tridimensionnelles de haute fidélité. DeepGeo généralise le DMM à des géométries 3D complexes en apprenant automatiquement des bases de déformation dans des espaces de conception de très haute dimension, ce qui simplifie considérablement la procédure de paramétrisation dans l’optimisation de forme. Il permet de larges libertés de déformation tout en imposant intrinsèquement une régularité globale. Dans des études de cas — incluant un cercle 2D, l’aile NASA Common Research Model et un avion à fuselage intégré (Blended-Wing-Body) — DeepGeo produit des formes optimisées dont les performances aérodynamiques sont comparables à celles obtenues par des paramétrisations manuelles de pointe, tout en réduisant significativement l’effort manuel.
+
+La thèse s’oriente ensuite vers l’exploration générative de l’espace de conception, une étape nécessaire en amont de l’optimisation pour le prototypage rapide de concepts. Je propose DiffGeo, un modèle de diffusion en espace latent qui apprend à échantillonner des formes aérodynamiques diverses et valides. En entraînant ce modèle de diffusion sur les codes latents issus du LSM, DiffGeo atteint une grande efficacité en termes de données et garantit la validité physique des conceptions générées. DiffGeo démontre également un schéma d’échantillonnage conditionnel : en guidant le processus de diffusion par des objectifs géométriques complexes, il devient possible de générer des formes répondant à des critères spécifiques. Enfin, j’ai participé au développement de Dflow-SUR, une approche de diffusion guidée par la physique offrant une efficacité de calcul élevée et une contrôlabilité supérieure. Un modèle de substitution fournit une mesure de performance différentiable qui guide l’échantillonnage en espace latent. L’optimisation de cet échantillonnage par rétropropagation des gradients conduit à des profils et des ailes présentant des performances aérodynamiques améliorées.
+
+Ces contributions constituent ensemble un pipeline cohérent : de l’exploration efficace de l’espace de conception jusqu’à une optimisation hautement automatisée, rendue possible par des modèles de paramétrisation entièrement différentiables. Les résultats montrent que l’apprentissage géométrique profond permet de traiter des représentations de forme complexes et d’accélérer considérablement le cycle de conception, en automatisant une grande partie du traitement géométrique et en offrant une génération de concepts assistée par l’IA. Cette recherche interdisciplinaire ouvre la voie à des processus de conception plus exploratoires, plus efficaces et véritablement collaboratifs entre l’humain et l’IA.
+
+\textbf{Mots-clés:} conception ingénierique par l’IA, apprentissage géométrique profond, optimisation aérodynamique des formes, paramétrisation de forme, conception générative
+
 \end{otherlanguage}
 
 
