@@ -20,8 +20,6 @@ The optimization is performed on a grid with $450,560$ cells, as shown in Fig.~\
     \label{ch5:fig:cs2_template_mesh}
 \end{figure}
 
-\input{chapter5/tab/table_crm_DV_cons}
-
 \subsubsection{Configuring DeepGeo}
 
 As in the previous case study, the L2 grid is used as the input template mesh $\hat{M}$.
@@ -37,6 +35,8 @@ The objective function $\cO_{CFD}$ and the loss function $\cL_{cons}$ from Eq.~\
 \end{align}
 %
 Minimizing $\cO_{CFD}$ aims to reduce $C_D$, bring $C_L$ close to 0.5, and ensure $C_M$ is greater than or equal to $-0.17$.  The extended Shoelace formula~\cite{aa.Zhang2001} is applied to compute the volume $Vol(V^S)$ of the deformed wing, with an arbitrary reference point on the root section plane. ${Vol}_\text{original}(S)$ represents wing's initial volume. The term $\bv^\text{LE,root}$ corresponds to the single leading-edge (LE) vertex on the root section, while $V_x$ and $V_y$ refer to the sets of $x$ and $y$ vertex coordinates, respectively. In practice, DeepGeo satisfies the thickness requirement without an explicit loss function term.
+
+\input{chapter5/tab/table_crm_DV_cons}
 
 \subsubsection{Configuring the Free-Form Deformation Baseline}
 

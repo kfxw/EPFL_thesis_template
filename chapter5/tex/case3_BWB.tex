@@ -4,9 +4,9 @@
 We now demonstrate DeepGeo's capability to handle complex 3D geometries without tuning. To this end, we focus on optimizing the first-generation Boeing Blended-Wing-Body (BWB) design as shown in Fig.~\ref{ch5:fig:cs3_template_mesh}. The BWB aircraft configuration integrates the wing and fuselage into a single, seamless structure to enhance aerodynamic efficiency, reduce drag, and lower fuel consumption. The BWB used in this case study has a span of 280 feet, a total length of 144 feet and is designed to carry 800 passengers~\cite{aa.Liebeck2004}.
 A notable challenge in this design is that the supersonic airflow creates significant shock waves, introducing strong drag forces. The key to optimization is refining the BWB shape to mitigate these drag-inducing effects.
 
-\subsubsection{Problem Formulation}
-
 \input{chapter5/tab/table_bwb_DV_cons}
+
+\subsubsection{Problem Formulation}
 
 The optimization objective is to minimize the drag coefficient $C_D$ while constraining the lift coefficient $C_L$ to $0.20056$ and ensuring a pitching moment coefficient $C_M$ of 0. This single-point optimization problem is performed under fully turbulent flow conditions at a Mach number of $0.85$, Reynolds number of $5\times10^6$ and an initial angle of attack of $0.58^{\circ}$. The optimization is performed on both the mesh that has $1,070,080$ cells, corresponding to the same setting as the L2 grid configuration in~\citet{aa.Lyu2014}. Shape modifications are allowed only along the $z$ axis to maintain a constant projected area, and the aircraft volume is constrained to remain above its initial value, preventing shrinkage that could reduce drag but compromise capacity. Compared to the optimization task of the CRM wing, the task for BWB aircraft is less constrained. Tab.~\ref{ch5:tab:bwb_DV_cons} summarizes the experimental setup. 
 
@@ -19,8 +19,6 @@ The optimization objective is to minimize the drag coefficient $C_D$ while const
     }
     \label{ch5:fig:cs3_template_mesh}
 \end{figure}
-
-\input{chapter5/tab/table_bwb_results}
 
 \begin{figure}[htb]
     \begin{center}
@@ -65,6 +63,8 @@ The aerodynamic objective function $\cO_{CFD}$ and the volume constraint $\cL_{c
     }
     \label{ch5:fig:cs3_slice}
 \end{figure}
+
+\input{chapter5/tab/table_bwb_results}
 
 \subsubsection{Configuring the Free-Form Deformation Baseline}
 

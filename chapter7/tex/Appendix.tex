@@ -1,4 +1,5 @@
-\section{Energy-based approach algorithm}
+\section{Appendix}
+\subsection{Energy-based approach algorithm}
 \label{ch7:sect:App_energyBasedAlg}
 
 The pseudo code of the energy-based physics injection flow matching algorithm involving full and intermediate trajectory injection strategies is described in Algorithm~\ref{ch7:alg:energyAlg}.
@@ -24,14 +25,35 @@ The pseudo code of the energy-based physics injection flow matching algorithm in
 \end{algorithm}
 
 
-\section{Airfoil case}
-\subsection{Model performance}
+\subsection{Airfoil case}
+\subsubsection{Model performance}
 \label{ch7:subsect:modelPerformance}
 We present the model performance comparative study results in Table~\ref{ch7:tab:modelPerformanceResults}. We primarily compare the final reduced values of the physical loss $\mathcal{L}_{\mathrm{phys}}$, the achieved $C_{L}$ accuracy, and the computation time. To ensure a fair comparison involving the surrogate model, all experiments are conducted on CPUs. In summary, \textit{Dflow-SUR} demonstrates a four orders-of-magnitude improvement in physical loss and achieves an approximate $74.47\%$ reduction in runtime compared to the energy-based baseline (with $t_c = 0.6$ and $T = 1000$), highlighting its exceptional capability to learn and enforce physical constraints.
 
+\subsubsection{Gradient alignment score}
+We further present the gradient alignment score of the energy-based approach when $t_c = 0.20, 0.60, 0.80$ (introduced in Section~\ref{ch7:subsect:physicalloss}) in Figure~\ref{ch7:fig:alignmentScore_app}. It can be observed that the gradient collision phenomenon persists during the primary inference phase. This indicates that the physical loss and flow matching loss consistently compete in their influence on design $\textbf{x}$, a behavior attributable to the issues arising from the injection of two guidance couplings.
+
+\label{ch7:sect:gradientAlignmentScore}
+\begin{figure}[htbp]
+    \centering
+    \subfloat[Physics injection when $t_c=0.2$]{%
+        \includegraphics[width=0.45\textwidth]{chapter7/fig/mean_std_alignment_history_0.2.png}%
+    }
+    \subfloat[Physics injection when $t_c=0.6$]{%
+        \includegraphics[width=0.45\textwidth]{chapter7/fig/mean_std_alignment_history_0.6.png}%
+    }\\
+    \subfloat[Physics injection when $t_c=0.8$]{%
+        \includegraphics[width=0.45\textwidth]{chapter7/fig/mean_std_alignment_history_0.8.png}%
+    }\quad
+    \caption{Gradient alignment scores during the $\mathcal{L}_{\mathrm{phys}}$ injection phase of the energy-based inference ($T = 1000$, $\lambda = 10$) with varying $t_c$. 0 on $x$-axis indicates the onset of $\mathcal{L}_{\mathrm{phys}}$ injection.}
+    \label{ch7:fig:alignmentScore_app}
+\end{figure}
+
+
 \begin{table}[!htb]
   \centering
-  \renewcommand{\arraystretch}{1.2}
+  \renewcommand{\arraystretch}{1}
+  \caption{Model performance comparison across methods and inference time steps ($T$).}
   \begin{tabular}{lcccc}
     \toprule
     \textbf{Method} & \textbf{T} & \textbf{$\mathcal{L}_{\mathrm{phys}}$} & \textbf{$C_L$} & \textbf{Time cost (s)} \\
@@ -62,34 +84,10 @@ We present the model performance comparative study results in Table~\ref{ch7:tab
     \textbf{Dflow-SUR} & \textbf{50} & \boldmath{$(4.80 \pm 6.91)\times10^{-8}$} & \boldmath{$0.699 \pm 6\times10^{-9}$} & \textbf{801} \\
     \bottomrule
   \end{tabular}
-  \caption{Model performance comparison across methods and inference time steps ($T$).}
   \label{ch7:tab:modelPerformanceResults}
 \end{table}
 
-\subsection{Gradient alignment score}
-We further present the gradient alignment score of the energy-based approach when $t_c = 0.20, 0.60, 0.80$ (introduced in Section~\ref{ch7:subsect:physicalloss}) in Figure~\ref{ch7:fig:alignmentScore_app}. It can be observed that the gradient collision phenomenon persists during the primary inference phase. This indicates that the physical loss and flow matching loss consistently compete in their influence on design $\textbf{x}$, a behavior attributable to the issues arising from the injection of two guidance couplings.
-
-\label{ch7:sect:gradientAlignmentScore}
-\begin{figure}[htbp]
-    \centering
-    \subfloat[Physics injection when $t_c=0.2$]{%
-        \includegraphics[width=0.6\textwidth]{chapter7/fig/mean_std_alignment_history_0.2.png}%
-    }\\
-    \subfloat[Physics injection when $t_c=0.6$]{%
-        \includegraphics[width=0.6\textwidth]{chapter7/fig/mean_std_alignment_history_0.6.png}%
-    }\\
-    \subfloat[Physics injection when $t_c=0.8$]{%
-        \includegraphics[width=0.6\textwidth]{chapter7/fig/mean_std_alignment_history_0.8.png}%
-    }\quad
-    \caption{Gradient alignment scores during the $\mathcal{L}_{\mathrm{phys}}$ injection phase of the energy-based inference ($T = 1000$, $\lambda = 10$) with varying $t_c$. The $x$-axis is aligned such that 0 indicates the onset of $\mathcal{L}_{\mathrm{phys}}$ injection.}
-    \label{ch7:fig:alignmentScore_app}
-\end{figure}
-
-\subsection{UQ of energy-based approach}
-\label{ch7:sect:AppendixUncertainty}
-We further present the UQ of generated samples from the energy-based approach evaluated by the surrogate model at each inference time step in Figure~\ref{ch7:fig:uqEnergy}. From analyzing the figures, we can observe that samples generated by the energy-based method during its generation process still exhibit high surrogate-evaluated UQ in the inference phase, thereby misleading the loss guidance.
-
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
     \centering
     \subfloat[Physics injection when $t_c=0.0$]{%
         \includegraphics[width=0.5\textwidth]{chapter7/fig/energy_T_0.0_violin_std.png}%
@@ -106,3 +104,9 @@ We further present the UQ of generated samples from the energy-based approach ev
     \caption{UQ of generative samples for energy-based approach (total inference time step = 1000) with various $T$ physics injection (the red line represents the UIUC data UQ mean).}
     \label{ch7:fig:uqEnergy}
 \end{figure}
+
+
+\subsubsection{UQ of energy-based approach}
+\label{ch7:sect:AppendixUncertainty}
+
+We further present the UQ of generated samples from the energy-based approach evaluated by the surrogate model at each inference time step in Figure~\ref{ch7:fig:uqEnergy}. From analyzing the figures, we can observe that samples generated by the energy-based method during its generation process still exhibit high surrogate-evaluated UQ in the inference phase, thereby misleading the loss guidance.
